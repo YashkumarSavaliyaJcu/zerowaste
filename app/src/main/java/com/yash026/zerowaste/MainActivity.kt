@@ -74,6 +74,8 @@ fun MainScreen() {
 
             )
         },
+
+        // add the bottom bar
         bottomBar = {
             NavigationBar {
                 items.forEachIndexed { index, item ->
@@ -119,6 +121,7 @@ fun FoodItem(imageRes: Int, title: String, expiryDate: String, note: String) {
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
+        // row for centralize the dta
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -131,6 +134,7 @@ fun FoodItem(imageRes: Int, title: String, expiryDate: String, note: String) {
                     .padding(end = 16.dp),
                 contentScale = ContentScale.Crop
             )
+            // data base
             Column {
                 Text(text = title, fontSize = 20.sp, color = Color.Black)
                 Text(text = expiryDate, fontSize = 14.sp, color = Color.Gray)
