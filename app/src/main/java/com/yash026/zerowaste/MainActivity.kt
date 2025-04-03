@@ -50,6 +50,7 @@ fun MainScreen() {
         Icons.Default.Person
     )
 
+    // List of foods
     val foodItems = listOf(
         FoodItemData(R.drawable.milk, "Milk", "Expires on: 25th March 2025", "Use for cooking before expiry."),
         FoodItemData(R.drawable.bread, "Bread", "Expires on: 22nd March 2025", "Store in a cool place."),
