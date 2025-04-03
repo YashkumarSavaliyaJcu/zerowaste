@@ -113,6 +113,7 @@ fun MainScreen() {
     }
 }
 
+// Card for item view
 @Composable
 fun FoodItem(imageRes: Int, title: String, expiryDate: String, note: String) {
     Card(
