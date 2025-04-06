@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -48,7 +50,18 @@ fun SearchScreen(
     Scaffold(
 
         topBar = {
-            TopAppBar(title = { Text("Recipe List") })
+            TopAppBar(
+                title = {
+                    Text(
+                        "Recipe List",
+                        color = Color.Black // Optional: change text color
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFA8FF97) // 🍊 Orange background
+                )
+            )
+
         }) { paddingValues ->
 
         Column(
@@ -64,7 +77,6 @@ fun SearchScreen(
                 Text("Error: $error")
             } else {
 
-                // add lazy loading
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 150.dp),
 
@@ -79,7 +91,6 @@ fun SearchScreen(
                         MealItem(
                             meal = meal,
                             onItemClick = { mealId ->
-
                                 navController.navigate("detail/$mealId")
                             },
                         )

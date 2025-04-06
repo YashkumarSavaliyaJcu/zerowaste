@@ -9,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
+import com.yash026.zerowaste.R
 import com.yash026.zerowaste.nav.NavItem
 
 
@@ -23,12 +25,11 @@ fun BottomNavigationBar(navController: NavHostController) {
     val navItems = listOf(NavItem.Home, NavItem.LIST, NavItem.Items)
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
-
     NavigationBar {
         navItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 alwaysShowLabel = true,
-                icon = { Icon(item.icon, contentDescription = item.title) },
+                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
                 label = { Text(item.title) },
                 selected = selectedItem == index,
                 onClick = {

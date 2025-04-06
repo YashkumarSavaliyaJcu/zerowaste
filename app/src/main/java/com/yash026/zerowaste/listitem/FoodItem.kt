@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -39,6 +40,9 @@ fun FoodItem(item: Booking, viewModel: BookingViewModel) {
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
 
@@ -57,7 +61,6 @@ fun FoodItem(item: Booking, viewModel: BookingViewModel) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape)
             )
 
 
@@ -82,8 +85,8 @@ fun FoodItem(item: Booking, viewModel: BookingViewModel) {
                 )
                 Text(
                     text = item.description,
-                    fontSize = 14.sp,
-                    color = Color.DarkGray,
+                    fontSize = 18.sp,
+                    color = Color.Black,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

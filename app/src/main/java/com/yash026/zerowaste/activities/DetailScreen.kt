@@ -2,6 +2,7 @@ package com.yash026.zerowaste.activities
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,9 +16,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -28,11 +35,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
@@ -49,7 +57,6 @@ import com.yash026.zerowaste.model.IngredientModel
 import com.yash026.zerowaste.model.MealDetail
 import com.yash026.zerowaste.model.MealDetailsModel
 import com.yash026.zerowaste.ui.theme.Red900
-import com.yash026.zerowaste.ui.theme.ZerowasteTheme
 import com.yash026.zerowaste.ui.theme.shimmerBrush
 import com.yash026.zerowaste.viewmodels.MealDetailViewModel
 
@@ -102,29 +109,26 @@ private fun ContentPreview(
     navController: NavHostController,
     meal: MealDetail,
 ) {
-    val screenState =
-        remember(meal) {
-            MealDetailsScreenState(
-                meal = MealDetailsModel(
-                    id = meal.idMeal,
-                    name = meal.strMeal,
-                    category = meal.strCategory,
-                    region = meal.strArea,
-                    instructions = meal.strInstructions,
-                    thumbnail = meal.strMealThumb,
-                    youtubeUrl = meal.strYoutube,
-                    sourceUrl = meal.strSource,
-                    ingredients = meal.let { getIngredientList(it) },
-                ),
-            )
-        }
-
-
-    ZerowasteTheme {
-        Content(
-            screenState = screenState, navController = navController
+    val screenState = remember(meal) {
+        MealDetailsScreenState(
+            meal = MealDetailsModel(
+                id = meal.idMeal,
+                name = meal.strMeal,
+                category = meal.strCategory,
+                region = meal.strArea,
+                instructions = meal.strInstructions,
+                thumbnail = meal.strMealThumb,
+                youtubeUrl = meal.strYoutube,
+                sourceUrl = meal.strSource,
+                ingredients = meal.let { getIngredientList(it) },
+            ),
         )
     }
+
+
+    Content(
+        screenState = screenState, navController = navController
+    )
 }
 
 fun getIngredientList(meal: MealDetail): List<IngredientModel> {
@@ -181,38 +185,84 @@ fun getIngredientList(meal: MealDetail): List<IngredientModel> {
     }.filterNotNull() // Remove null values
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content(
-    screenState: MealDetailsScreenState, navController: NavHostController,
+    screenState: MealDetailsScreenState,
+    navController: NavHostController,
 ) = with(screenState) {
 
     val meal = screenState.meal
-    val onSaveButtonClick = screenState.onSaveButtonClick
-    val context = LocalContext.current
 
-    LazyColumn(
-        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 24.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding()
-    ) {
-        toolbar(
-            onBackButtonClick = { navController.popBackStack() },
+    Scaffold(topBar = {
+        TopAppBar(
+            title = {
+                Text(
+                    "Recipe Detail", color = Color.Black // Optional: change text color
+                )
+            }, navigationIcon = {
+                Icon(Icons.Rounded.ArrowBack, "", modifier = Modifier.padding(start = 15.dp).clickable {
+                    navController.navigateUp()
+                })
+            },
+
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color(0xFFA8FF97) // 🍊 Orange background
+            )
         )
 
-        mealThumbnail(meal = meal)
+    }, content = { paddingValues ->
+        LazyColumn(
+            contentPadding = PaddingValues(
+                start = 20.dp,
+                end = 20.dp,
+                top = paddingValues.calculateTopPadding(),
+                bottom = 24.dp
+            ), modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+        ) {
 
-        mealName(meal = meal)
+            mealName(meal = meal)
 
-        instructions(meal = meal)
+            instructions(meal = meal)
 
-        ingredients(meal = meal)
+            mealThumbnail(meal = meal)
 
-    }
-
+            ingredients(meal = meal)
+        }
+    })
 }
 
-// Lazy Loading
+
+//@Composable
+//private fun Content(
+//    screenState: MealDetailsScreenState, navController: NavHostController,
+//) = with(screenState) {
+//
+//    val meal = screenState.meal
+//
+//
+//
+//    LazyColumn(
+//        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 24.dp),
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .systemBarsPadding()
+//    ) {
+//        mealThumbnail(meal = meal)
+//
+//        mealName(meal = meal)
+//
+//        instructions(meal = meal)
+//
+//        ingredients(meal = meal)
+//
+//    }
+//
+//}
+
+
 private fun LazyListScope.ingredients(meal: MealDetailsModel) {
     if (meal.ingredients.isEmpty()) return
 
@@ -265,10 +315,9 @@ private fun LazyListScope.instructions(meal: MealDetailsModel) {
 
 private fun LazyListScope.mealName(meal: MealDetailsModel) {
     item(key = meal.name) {
-        com.inconceptlabs.designsystem.components.core.Text(
+        Text(
             text = meal.name,
-            style = AppTheme.typography.H5,
-            modifier = Modifier.padding(top = 12.dp)
+            fontSize = 22.sp,
         )
     }
 }
@@ -287,7 +336,7 @@ private fun LazyListScope.mealThumbnail(meal: MealDetailsModel) {
             modifier = Modifier
                 .padding(top = 24.dp)
                 .fillMaxWidth()
-                .height(320.dp)
+                .height(250.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .background(shimmerBrush(isImageLoading))
         )
@@ -326,8 +375,7 @@ private fun LazyListScope.toolbar(
 
             CompositionLocalProvider(
                 LocalContentColor provides Red900
-            ) {
-            }
+            ) {}
         }
     }
 }
