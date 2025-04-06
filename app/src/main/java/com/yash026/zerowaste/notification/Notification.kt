@@ -78,7 +78,7 @@ class Notification : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
             .setContentTitle(title)
             .setContentText(message)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.zerowastelogo)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
