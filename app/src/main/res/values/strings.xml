@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">zerowaste</string>
+
+
+    <string name="meal_details_title">Recipe Details</string>
+    <string name="meal_details_external_sources">External sources</string>
+    <string name="meal_details_external_sources_description">Curious for more? Check out these links:</string>
+    <string name="meal_details_youtube">YouTube</string>
+    <string name="meal_details_website">Website</string>
+    <string name="meal_details_ingredients">Ingredients</string>
+    <string name="meal_details_cooking_process">Cooking process</string>
+
+
 </resources>

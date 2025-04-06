@@ -1,28 +1,35 @@
 package com.yash026.zerowaste
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.navigation.compose.rememberNavController
+import com.yash026.zerowaste.composables.MainScreen
 import com.yash026.zerowaste.ui.theme.ZerowasteTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,132 +38,100 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ZerowasteTheme {
-                MainScreen()
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreen() {
-    var selectedItem by remember { mutableStateOf(0) }
-
-    val items = listOf("Home", "Food List", "Add Food", "Profile")
-    val Image = listOf(
-        Icons.Default.Home,
-        Icons.Default.Home,
-        Icons.Default.Add,
-        Icons.Default.Person
-    )
-
-    // List of foods
-    val foodItems = listOf(
-        FoodItemData(R.drawable.milk, "Milk", "Expires on: 25th March 2025", "Use for cooking before expiry."),
-        FoodItemData(R.drawable.bread, "Bread", "Expires on: 22nd March 2025", "Store in a cool place."),
-        FoodItemData(R.drawable.cheese, "Cheese", "Expires on: 30th March 2025", "Keep refrigerated."),
-        FoodItemData(R.drawable.egg, "Eggs", "Expires on: 28th March 2025", "Consume within 2 weeks."),
-        FoodItemData(R.drawable.yogurt, "Yogurt", "Expires on: 26th March 2025", "Keep chilled."),
-    )
-
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Row {
-                    Text("Zero Waste Tracker",)
-                }
-
-                     },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFbdffa2),
-                    titleContentColor = Color.Black
-                ),
-
-            )
-        },
-
-        // add the bottom bar
-        bottomBar = {
-            NavigationBar {
-                items.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        icon = { Icon(Image[index], contentDescription = item) },
-                        label = { Text(item) },
-                        selected = selectedItem == index,
-                        onClick = { selectedItem = index }
-                    )
-                }
-            }
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(foodItems) { food ->
-                    FoodItem(
-                        imageRes = food.imageRes,
-                        title = food.title,
-                        expiryDate = food.expiryDate,
-                        note = food.note
-                    )
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    PermissionScreen()
                 }
             }
         }
     }
 }
 
-// Card for item view
 @Composable
-fun FoodItem(imageRes: Int, title: String, expiryDate: String, note: String) {
-    Card(
+fun PermissionScreen() {
+    val context = LocalContext.current
+
+    val imagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
+    val notificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.Manifest.permission.POST_NOTIFICATIONS
+    } else null
+
+    var hasImagePermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                imagePermission
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    var hasNotificationPermission by remember {
+        mutableStateOf(
+            notificationPermission == null ||
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        notificationPermission
+                    ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val imagePermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasImagePermission = isGranted
+    }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasNotificationPermission = isGranted
+    }
+
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+            .fillMaxSize()
+            ,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // row for centralize the dta
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = "Food Image",
-                modifier = Modifier
-                    .size(80.dp)
-                    .padding(end = 16.dp),
-                contentScale = ContentScale.Crop
-            )
-            // data base
-            Column {
-                Text(text = title, fontSize = 20.sp, color = Color.Black)
-                Text(text = expiryDate, fontSize = 14.sp, color = Color.Gray)
-                Text(text = note, fontSize = 14.sp, color = Color.DarkGray)
+        if (hasImagePermission && hasNotificationPermission) {
+            GreetingPreview()
+        } else {
+            if (!hasImagePermission) {
+                Text("❌ Image permission not granted")
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    imagePermissionLauncher.launch(imagePermission)
+                }) {
+                    Text("Request Image Permission")
+                }
+            }
+            if (!hasNotificationPermission && notificationPermission != null) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("🔕 Notification permission not granted")
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    notificationPermissionLauncher.launch(notificationPermission)
+                }) {
+                    Text("Request Notification Permission")
+                }
             }
         }
     }
 }
 
-data class FoodItemData(
-    val imageRes: Int,
-    val title: String,
-    val expiryDate: String,
-    val note: String
-)
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     ZerowasteTheme {
-        MainScreen()
+        val navController = rememberNavController()
+        Surface(modifier = Modifier.fillMaxSize()) {
+            MainScreen(navController = navController)
+        }
     }
 }

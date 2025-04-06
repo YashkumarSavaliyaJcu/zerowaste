@@ -1,15 +1,23 @@
 [versions]
-agp = "8.8.1"
-kotlin = "2.0.0"
+agp = "8.8.2"
+kotlin = "2.1.10"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.0"
-composeBom = "2024.04.01"
+activityCompose = "1.10.1"
+composeBom = "2025.03.01"
 drawerlayout = "1.2.0"
 material = "1.12.0"
+roomRuntime = "2.6.1"
+workRuntimeKtx = "2.10.0"
+navigationFragment = "2.8.9"
+dexter = "6.2.3"
+navigationRuntimeDesktop = "2.9.0-alpha09"
+navigationCompose = "2.8.9"
+navigationRuntimeAndroid = "2.9.0-alpha09"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +36,17 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-drawerlayout = { group = "androidx.drawerlayout", name = "drawerlayout", version.ref = "drawerlayout" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+dexter = { module = "com.karumi:dexter", version.ref = "dexter" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
+androidx-navigation-runtime-desktop = { group = "androidx.navigation", name = "navigation-runtime-desktop", version.ref = "navigationRuntimeDesktop" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
