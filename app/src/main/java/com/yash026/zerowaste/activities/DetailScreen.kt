@@ -212,7 +212,7 @@ private fun Content(
 
 }
 
-
+// Lazy Loading
 private fun LazyListScope.ingredients(meal: MealDetailsModel) {
     if (meal.ingredients.isEmpty()) return
 

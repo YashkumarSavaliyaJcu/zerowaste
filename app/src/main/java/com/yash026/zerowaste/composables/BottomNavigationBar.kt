@@ -23,6 +23,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     val navItems = listOf(NavItem.Home, NavItem.LIST, NavItem.Items)
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
+
     NavigationBar {
         navItems.forEachIndexed { index, item ->
             NavigationBarItem(

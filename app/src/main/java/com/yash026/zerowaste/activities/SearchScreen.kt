@@ -64,6 +64,7 @@ fun SearchScreen(
                 Text("Error: $error")
             } else {
 
+                // add lazy loading
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 150.dp),
 

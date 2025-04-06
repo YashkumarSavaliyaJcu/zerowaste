@@ -62,8 +62,7 @@ fun HomeScreen(
 ) {
 
     val context = LocalContext.current
-
-
+    // Top app bar
     Scaffold(
         topBar = {
             TopAppBar(
@@ -203,6 +202,7 @@ fun HomeScreen(
     }
 
 }
+// Url code
 
 fun copyUriToFile(context: Context, uri: Uri): File? {
     return try {
