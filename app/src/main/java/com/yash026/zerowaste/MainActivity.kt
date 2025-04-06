@@ -46,6 +46,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+
+// Permission functions
 @Composable
 fun PermissionScreen() {
     val context = LocalContext.current
