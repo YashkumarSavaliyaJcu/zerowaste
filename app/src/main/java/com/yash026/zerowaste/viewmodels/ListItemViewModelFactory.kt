@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlin.jvm.java
 
-class BookingViewModelFactory(private val repository: BookingRepository) :
+class ListItemViewModelFactory(private val repository: ListItemRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BookingViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(ListItemViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return BookingViewModel(repository) as T
+            return ListItemViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

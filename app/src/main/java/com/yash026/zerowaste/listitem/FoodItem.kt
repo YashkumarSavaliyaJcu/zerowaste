@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -22,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
-import com.yash026.zerowaste.model.Booking
-import com.yash026.zerowaste.viewmodels.BookingViewModel
+import com.yash026.zerowaste.model.Items
+import com.yash026.zerowaste.viewmodels.ListItemViewModel
 
 @Composable
-fun FoodItem(item: Booking, viewModel: BookingViewModel) {
+fun FoodItem(item: Items, viewModel: ListItemViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

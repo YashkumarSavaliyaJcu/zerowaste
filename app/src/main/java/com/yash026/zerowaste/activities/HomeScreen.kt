@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,7 +13,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,12 +24,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,7 +40,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -57,10 +51,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.yash026.zerowaste.R
-import com.yash026.zerowaste.model.Booking
-import com.yash026.zerowaste.utils.BookingApplication
-import com.yash026.zerowaste.viewmodels.BookingViewModel
-import com.yash026.zerowaste.viewmodels.BookingViewModelFactory
+import com.yash026.zerowaste.model.Items
+import com.yash026.zerowaste.utils.ZeroWasteApplication
+import com.yash026.zerowaste.viewmodels.ListItemViewModel
+import com.yash026.zerowaste.viewmodels.ListItemViewModelFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
@@ -68,9 +62,9 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: BookingViewModel = viewModel(
-        factory = BookingViewModelFactory(
-            (LocalContext.current.applicationContext as BookingApplication).repository
+    viewModel: ListItemViewModel = viewModel(
+        factory = ListItemViewModelFactory(
+            (LocalContext.current.applicationContext as ZeroWasteApplication).repository
         )
     )
 ) {
@@ -184,7 +178,7 @@ fun HomeScreen(
                 Button(
                     onClick = {
                         if (title.isNotEmpty() && date.isNotEmpty() && time.isNotEmpty() && description.isNotEmpty() && imageUri != null) {
-                            val booking = Booking(
+                            val booking = Items(
                                 id = 0,
                                 date = date,
                                 time = time,

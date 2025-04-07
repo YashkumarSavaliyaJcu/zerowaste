@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SearchMealViewModel() : ViewModel() {
+class RecipeMealViewModel() : ViewModel() {
 
 
     private val _meals = MutableStateFlow<List<Meal>>(emptyList())

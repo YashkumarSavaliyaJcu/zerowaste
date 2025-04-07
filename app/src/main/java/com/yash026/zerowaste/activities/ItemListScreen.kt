@@ -22,15 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yash026.zerowaste.listitem.FoodItem
-import com.yash026.zerowaste.utils.BookingApplication
-import com.yash026.zerowaste.viewmodels.BookingViewModel
-import com.yash026.zerowaste.viewmodels.BookingViewModelFactory
+import com.yash026.zerowaste.utils.ZeroWasteApplication
+import com.yash026.zerowaste.viewmodels.ListItemViewModel
+import com.yash026.zerowaste.viewmodels.ListItemViewModelFactory
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllBookingsScreen(
-    viewModel: BookingViewModel = viewModel(factory = BookingViewModelFactory((LocalContext.current.applicationContext as BookingApplication).repository))
+fun ItemListScreen(
+    viewModel: ListItemViewModel = viewModel(factory = ListItemViewModelFactory((LocalContext.current.applicationContext as ZeroWasteApplication).repository))
 ) {
 
     val bookings by viewModel.allBookings.observeAsState(emptyList())

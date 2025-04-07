@@ -10,17 +10,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yash026.zerowaste.model.Booking
+import com.yash026.zerowaste.model.Items
 import com.yash026.zerowaste.notification.Notification
-import com.yash026.zerowaste.utils.BookingApplication
+import com.yash026.zerowaste.utils.ZeroWasteApplication
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class BookingViewModel(private val repository: BookingRepository) : ViewModel() {
+class ListItemViewModel(private val repository: ListItemRepository) : ViewModel() {
 
-    val allBookings: LiveData<List<Booking>> = repository.allBookings
+    val allBookings: LiveData<List<Items>> = repository.allBookings
 
     companion object {
         const val titleExtra = "titleExtra"
@@ -29,7 +29,7 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
     }
 
 
-    fun insertAndSchedule(booking: Booking) = viewModelScope.launch {
+    fun insertAndSchedule(booking: Items) = viewModelScope.launch {
         if (booking.id != 0) {
             Log.w(
                 "TAG###",
@@ -65,8 +65,8 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
 
 
     @SuppressLint("ScheduleExactAlarm")
-    fun scheduleNotification(book: Booking) {
-        val appContext = BookingApplication.mInstance
+    fun scheduleNotification(book: Items) {
+        val appContext = ZeroWasteApplication.mInstance
 
         if (book.id == 0) {
             Log.e("TAG###", "FATAL: scheduleNotification called with booking ID 0 unexpectedly.")
@@ -143,7 +143,7 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
     }
 
 
-    private fun getTime(book: Booking): Long {
+    private fun getTime(book: Items): Long {
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -176,7 +176,7 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
     }
 
 
-    fun delete(booking: Booking) = viewModelScope.launch {
+    fun delete(booking: Items) = viewModelScope.launch {
         if (booking.id != 0) { // Only try to cancel if ID is valid
             cancelNotification(booking)
         } else {
@@ -186,13 +186,13 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
         Log.d("TAG###", "Booking deleted with ID: ${booking.id}")
     }
 
-    fun cancelNotification(book: Booking) {
+    fun cancelNotification(book: Items) {
         if (book.id == 0) {
             Log.w("TAG###", "Cannot cancel notification for booking with invalid ID 0.")
             return
         }
         val appContext =
-            BookingApplication.mInstance/*getApplication<Application>().applicationContext*/
+            ZeroWasteApplication.mInstance/*getApplication<Application>().applicationContext*/
         val alarmManager = appContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(appContext, Notification::class.java) // Match the scheduling intent
         val uniqueNotificationID: Int = book.id //.toInt() // Use the same ID logic as scheduling

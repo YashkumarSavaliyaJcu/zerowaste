@@ -27,12 +27,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.yash026.zerowaste.composables.CenteredLoadingIndicator
 import com.yash026.zerowaste.listitem.MealItem
-import com.yash026.zerowaste.viewmodels.SearchMealViewModel
+import com.yash026.zerowaste.viewmodels.RecipeMealViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(
-    navController: NavHostController, viewModel: SearchMealViewModel = viewModel()
+fun RecipeScreen(
+    navController: NavHostController, viewModel: RecipeMealViewModel = viewModel()
 ) {
 
     var categoryToFetch by remember { mutableStateOf("") } // State for category

@@ -5,13 +5,13 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.yash026.zerowaste.database.BookingDatabase
-import com.yash026.zerowaste.viewmodels.BookingRepository
+import com.yash026.zerowaste.database.ListItemDatabase
+import com.yash026.zerowaste.viewmodels.ListItemRepository
 import kotlin.getValue
 
-class BookingApplication : Application() {
-    val database by lazy { BookingDatabase.Companion.getDatabase(this) }
-    val repository by lazy { BookingRepository(database.bookingDao()) }
+class ZeroWasteApplication : Application() {
+    val database by lazy { ListItemDatabase.Companion.getDatabase(this) }
+    val repository by lazy { ListItemRepository(database.listItemDao()) }
 
     override fun onCreate() {
         super.onCreate()
@@ -27,7 +27,7 @@ class BookingApplication : Application() {
     }
 
     companion object {
-        lateinit var mInstance: BookingApplication
+        lateinit var mInstance: ZeroWasteApplication
         fun getContext(): Context? {
             return mInstance.applicationContext
         }
