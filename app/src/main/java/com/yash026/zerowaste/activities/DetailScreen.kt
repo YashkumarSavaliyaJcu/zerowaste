@@ -67,7 +67,6 @@ fun DetailScreen(
     id: String, navController: NavHostController, viewModel: MealDetailViewModel = viewModel()
 
 ) {
-
     LaunchedEffect(Unit) {
         viewModel.fetchMeal(id)
     }
@@ -194,6 +193,7 @@ private fun Content(
 
     val meal = screenState.meal
 
+    //Recipe details
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -235,32 +235,6 @@ private fun Content(
 }
 
 
-//@Composable
-//private fun Content(
-//    screenState: MealDetailsScreenState, navController: NavHostController,
-//) = with(screenState) {
-//
-//    val meal = screenState.meal
-//
-//
-//
-//    LazyColumn(
-//        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 24.dp),
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .systemBarsPadding()
-//    ) {
-//        mealThumbnail(meal = meal)
-//
-//        mealName(meal = meal)
-//
-//        instructions(meal = meal)
-//
-//        ingredients(meal = meal)
-//
-//    }
-//
-//}
 
 
 private fun LazyListScope.ingredients(meal: MealDetailsModel) {
@@ -287,6 +261,7 @@ private fun LazyListScope.ingredients(meal: MealDetailsModel) {
     }
 }
 
+// lazy scope of data
 private fun LazyListScope.instructions(meal: MealDetailsModel) {
     if (meal.instructions.isBlank()) return
 
